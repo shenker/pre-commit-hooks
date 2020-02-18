@@ -1,0 +1,12 @@
+-   id: fix-environment-files
+    name: Fix environment.yml Files
+    description: This hook removes the "prefix:" part of environment.yml files.
+    entry: ./fix-environment-files.sh
+    language: script
+    files: (^|/)environment\.(yml|yaml)$
+-   id: tag-directory
+    name: Tag Commit Message
+    description: Tag commit message with changed directories.
+    entry: python ./tag_directory.py
+    language: system
+    stages: [commit-msg]
