@@ -10,3 +10,9 @@
     entry: python ./tag_directory.py
     language: system
     stages: [commit-msg]
+-   id: sort-yaml
+    name: Sort YAML files
+    language: conda
+    entry: python ./sort_yaml.py
+    description: Sorts YAML files, preserving comments and blocks.
+    types: [yaml]
