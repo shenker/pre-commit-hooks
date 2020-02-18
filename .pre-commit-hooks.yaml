@@ -1,8 +1,8 @@
--   id: fix-environment-files
+-   id: fix-environment-yamls
     name: Fix environment.yml Files
-    description: This hook removes the "prefix:" part of environment.yml files.
-    entry: ./fix-environment-files.sh
-    language: script
+    description: This hook removes the prefix and sorts the dependencies list in environment.yml files.
+    entry: python ./fix_environment_yamls.py
+    language: conda
     files: (^|/)environment\.(yml|yaml)$
 -   id: tag-directory
     name: Tag Commit Message
@@ -10,9 +10,3 @@
     entry: python ./tag_directory.py
     language: system
     stages: [commit-msg]
--   id: sort-yaml
-    name: Sort YAML files
-    language: conda
-    entry: python ./sort_yaml.py
-    description: Sorts YAML files, preserving comments and blocks.
-    types: [yaml]

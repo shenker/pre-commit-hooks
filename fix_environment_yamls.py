@@ -32,7 +32,7 @@ def sort_mappings(s, recursive=False, sort_lists=True):
     if isinstance(s, list):
         for elem in s:
             if recursive:
-                sort_mappings(elem, recursive=recursive)
+                sort_mappings(elem, recursive=recursive, sort_lists=sort_lists)
         if sort_lists:
             s[:] = sorted(s, key=_sort_key)
         return
@@ -41,33 +41,20 @@ def sort_mappings(s, recursive=False, sort_lists=True):
     for key in sorted(s, reverse=True, key=_sort_key):
         value = s.pop(key)
         if recursive:
-            sort_mappings(value, recursive=recursive)
+            sort_mappings(value, recursive=recursive, sort_lists=sort_lists)
         s.insert(0, key, value)
 
 
-def process_yaml(doc, keys=None, recursive=False):
-    if keys:
-        for key in keys:
-            d = doc[key]
-            print(key, d)
-            sort_mappings(d, recursive=recursive)
-    else:
-        sort_mappings(doc, recursive=recursive)
+def process_file(doc):
+    if 'prefix' in doc:
+        del doc['prefix']
+    if 'dependencies' in doc:
+        sort_mappings(doc['dependencies'])
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument('filenames', nargs='*', help='Filenames to fix')
-    parser.add_argument(
-        '-r',
-        '--recursive',
-        default=False,
-        action='store_true',
-        help="Sort YAML recursively",
-    )
-    parser.add_argument(
-        '-k', '--key', type=str, action='append', help="YAML keys to sort"
-    )
     args = parser.parse_args(argv)
     retval = 0
     yaml = StringYAML()
@@ -76,7 +63,7 @@ def main(argv=None):
         with open(filename, 'r+') as f:
             old_contents = f.read()
             doc = yaml.load(old_contents)
-            process_yaml(doc, keys=args.key, recursive=args.recursive)
+            process_file(doc)
             new_contents = yaml.dump(doc)
             if old_contents != new_contents:
                 print(f'Fixing file `{filename}`')
