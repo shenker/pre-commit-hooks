@@ -1,12 +1,12 @@
 -   id: fix-environment-yamls
     name: Fix environment.yml Files
     description: This hook removes the prefix and sorts the dependencies list in environment.yml files.
-    entry: python ./fix_environment_yamls.py
-    language: conda
+    entry: fix-environment-yamls
+    language: python
     files: (^|/)environment\.(yml|yaml)$
 -   id: tag-directory
     name: Tag Commit Message
     description: Tag commit message with changed directories.
-    entry: python ./tag_directory.py
-    language: system
+    entry: tag-directory
+    language: python
     stages: [commit-msg]

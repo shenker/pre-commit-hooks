@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "pre_commit_hooks"
+version = "0.1.0"
+description = "Git hooks using the pre-commit framework."
+authors = ["Jacob Quinn Shenker <jacob@shenker.net>"]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+"ruamel.yaml" = "^0.16.10"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry.scripts]
+fix-environment-yamls = "pre_commit_hooks.fix_environment_yamls:main"
+tag-directory = "pre_commit_hooks.tag_directory:main"
