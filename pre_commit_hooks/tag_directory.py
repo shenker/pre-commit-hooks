@@ -23,7 +23,9 @@ def get_tags(files, max_tags, max_depth, prefixes=None):
     paths = [_split_prefix(pathlib.Path(f.decode()), prefixes) for f in files if f]
     for depth in reversed(range(1, max_depth + 1)):
         counts = Counter([(p[0], p[1].parent.parts[:depth]) for p in paths])
-        del counts[()]
+        for p in list(counts):
+            if not p[1]:
+                del counts[p]
         if len(counts) <= max_tags:
             break
     if not counts or len(counts) > max_tags:
