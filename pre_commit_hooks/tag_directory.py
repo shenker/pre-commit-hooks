@@ -13,7 +13,7 @@ def _split_prefix(path, prefixes):
     for prefix in prefixes:
         try:
             short = path.relative_to(prefix)
-            return short
+            return (prefix, short)
         except ValueError:
             continue
     return (None, path)
