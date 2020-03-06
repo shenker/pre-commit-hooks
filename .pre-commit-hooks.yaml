@@ -3,7 +3,7 @@
     description: This hook removes the prefix and sorts the dependencies list in environment.yml files.
     entry: fix-environment-yamls
     language: python
-    files: (^|/)environment\.(yml|yaml)$
+    files: '(^|/)environment\.(yml|yaml)$'
 -   id: tag-directory
     name: Tag Commit Message
     description: Tag commit message with changed directories.
