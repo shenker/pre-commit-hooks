@@ -3,6 +3,7 @@
 import sys
 import pathlib
 import subprocess
+import re
 from collections import Counter
 import click
 
@@ -29,7 +30,7 @@ def get_tags(files, max_tags, max_depth, prefixes=None):
         if len(counts) <= max_tags:
             break
     if not counts or len(counts) > max_tags:
-        return None
+        return []
     tags = ["/".join(p[1]) for p, _ in counts.most_common()]
     return tags
 
@@ -60,15 +61,24 @@ def cli(commit_msg_file, prefix, depth, tags):
         sys.exit(ret.returncode)
 
     changed_files = ret.stdout.split(b"\x00")
-    tags = get_tags(changed_files, tags, depth, prefixes=prefix)
-    if tags is None:
-        sys.exit(0)
-    tag_str = f"[{','.join(tags)}]"
+    new_tags = get_tags(changed_files, tags, depth, prefixes=prefix)
 
     with open(commit_msg_file, "r+") as f:
-        msg = f.read()
+        full_msg = f.read()
+        match = re.match(r"^\s*\[([^\]]+)\]\s*(.*)", full_msg)
+        if match:
+            old_tags = match.group(1).split(",")
+            old_msg = match.group(2)
+        else:
+            old_tags = []
+            old_msg = full_msg
+        tags = list(set(old_tags) + set(new_tags))
+        if not tags:
+            sys.exit(0)
+        tag_str = f"[{','.join(tags)}]"
         f.seek(0)
-        f.write(tag_str + " " + msg)
+        new_msg = tag_str + " " + old_msg
+        f.write(new_msg)
 
 
 if __name__ == "__main__":
