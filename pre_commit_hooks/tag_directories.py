@@ -72,7 +72,7 @@ def cli(commit_msg_file, prefix, depth, tags):
         else:
             old_tags = []
             old_msg = full_msg
-        tags = list(set(old_tags) + set(new_tags))
+        tags = list(set(old_tags) & set(new_tags))
         if not tags:
             sys.exit(0)
         tag_str = f"[{','.join(tags)}]"
