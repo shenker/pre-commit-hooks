@@ -18,4 +18,4 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry.scripts]
 fix-environment-yamls = "pre_commit_hooks.fix_environment_yamls:main"
-tag-directory = "pre_commit_hooks.tag_directory:cli"
+tag-directories = "pre_commit_hooks.tag_directories:cli"
