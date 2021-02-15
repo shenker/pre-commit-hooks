@@ -4,9 +4,9 @@
     entry: fix-environment-yamls
     language: python
     files: '(^|/)environment\.(yml|yaml)$'
--   id: tag-directory
+-   id: tag-dirs
     name: Tag Commit Message
     description: Tag commit message with changed directories.
-    entry: tag-directory
+    entry: tag-dirs
     language: python
     stages: [commit-msg]
